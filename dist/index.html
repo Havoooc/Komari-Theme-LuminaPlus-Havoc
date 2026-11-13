@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta
+      name="keywords"
+      content="Komari-Theme-LuminaPlus, LuminaPlus, server monitor, real-time server status, server performance dashboard, monitoring tool" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Komari-Theme-LuminaPlus" />
+    <link rel="manifest" href="/manifest.json" crossorigin="use-credentials" />
+    <link rel="apple-touch-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon.ico" />
+    <meta property="og:title" content="Komari-Theme-LuminaPlus" />
+    <meta property="og:description" content="A Komari monitor theme." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Komari-Theme-LuminaPlus" />
+    <meta name="twitter:description" content="A Komari monitor theme." />
+    <title>Komari-Theme-LuminaPlus</title>
+    <meta name="description" content="A Komari monitor theme." />
+    <script>
+      (() => {
+        const appearances = new Set(["system", "light", "dark"]);
+        const readAppearance = (key) => {
+          const raw = localStorage.getItem(key);
+          if (raw == null) return null;
+          let value = raw;
+          try {
+            value = JSON.parse(raw);
+          } catch {}
+          if (!appearances.has(value)) return null;
+          const normalized = JSON.stringify(value);
+          if (raw !== normalized) localStorage.setItem(key, normalized);
+          return value;
+        };
+
+        let appearance = "system";
+        try {
+          appearance = readAppearance("appearance") ?? readAppearance("appearance_default") ?? "system";
+        } catch {
+          appearance = "system";
+        }
+        const resolved =
+          appearance === "system"
+            ? window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light"
+            : appearance;
+        document.documentElement.dataset.appearance = resolved;
+        document.documentElement.style.colorScheme = resolved;
+        const meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.content = resolved === "dark" ? "#000000" : "#F5F5F7";
+
+        try {
+          const rawDepth = localStorage.getItem("komaritheme:dark-depth");
+          if (rawDepth != null) {
+            const parsedDepth = Number(rawDepth);
+            const darkDepth = Number.isFinite(parsedDepth)
+              ? Math.min(100, Math.max(0, Math.round(parsedDepth)))
+              : 0;
+            if (darkDepth > 0) {
+              document.documentElement.style.setProperty(
+                "--dark-depth",
+                String(darkDepth),
+              );
+            } else {
+              document.documentElement.style.removeProperty("--dark-depth");
+            }
+          }
+        } catch {}
+
+        try {
+          const rawBg = localStorage.getItem("komaritheme:bg");
+          if (rawBg) {
+            const bg = JSON.parse(rawBg);
+            if (bg && (bg.v === 1 || bg.v === 2)) {
+              const sizes = new Set(["cover", "contain", "auto"]);
+              const positions = new Set(["top", "center", "bottom"]);
+              const parseImage = (value) =>
+                typeof value === "string" &&
+                (value === "none" || /^url\("[^\"'`()<>\\\s]+"\)$/.test(value))
+                  ? value
+                  : null;
+              const dark = resolved === "dark";
+              const desktopImage =
+                parseImage(dark ? bg.darkDesktop : bg.lightDesktop) ?? "none";
+              const mobile =
+                parseImage(dark ? bg.darkMobile : bg.lightMobile) ?? desktopImage;
+              const isMobile = window.matchMedia("(max-width: 720px)").matches;
+              const hasCoarsePointer = window.matchMedia(
+                "(hover: none) and (pointer: coarse)",
+              ).matches;
+              const reducedMotion = window.matchMedia(
+                "(prefers-reduced-motion: reduce)",
+              ).matches;
+              const saveData = navigator.connection && navigator.connection.saveData === true;
+              const shouldLoadDesktopVideo =
+                bg.v === 2 &&
+                bg.desktopVideo === true &&
+                !isMobile &&
+                !hasCoarsePointer &&
+                !reducedMotion &&
+                !saveData;
+              const desktop = shouldLoadDesktopVideo ? "none" : desktopImage;
+              const parsedAlpha =
+                (typeof bg.alpha === "string" && bg.alpha.trim() !== "") ||
+                typeof bg.alpha === "number"
+                  ? Number(bg.alpha)
+                  : Number.NaN;
+              const alpha = Number.isFinite(parsedAlpha)
+                ? Math.min(100, Math.max(0, Math.round(parsedAlpha)))
+                : 100;
+              const scrim = alpha >= 95 ? 0 : Math.round(((95 - alpha) / 95) * 16);
+              const style = document.documentElement.style;
+              style.setProperty("--bg-image-desktop", desktop);
+              style.setProperty("--bg-image-mobile", mobile);
+              style.setProperty("--bg-size", sizes.has(bg.size) ? bg.size : "cover");
+              style.setProperty("--bg-position", positions.has(bg.position) ? bg.position : "center");
+              const selectedImage = isMobile ? mobile : desktop;
+              if (selectedImage !== "none") {
+                style.setProperty("--surface-alpha", String(alpha));
+              } else {
+                style.removeProperty("--surface-alpha");
+              }
+              if (selectedImage !== "none" && scrim > 0) {
+                style.setProperty(
+                  "--bg-scrim",
+                  `color-mix(in srgb, var(--bg-0) ${scrim}%, transparent)`,
+                );
+              } else {
+                style.removeProperty("--bg-scrim");
+              }
+            }
+          }
+        } catch {}
+      })();
+    </script>
+    <script type="module" crossorigin src="/assets/index-BX6_Q0cK.js?v=20261113-typechip"></script>
+    <link rel="modulepreload" crossorigin href="/assets/rolldown-runtime-Cyuzqnbw.js">
+    <link rel="modulepreload" crossorigin href="/assets/charts-lRTmaCY8.js">
+    <link rel="modulepreload" crossorigin href="/assets/react-B6sZ2b7g.js">
+    <link rel="modulepreload" crossorigin href="/assets/query-D3o3BLLG.js">
+    <link rel="modulepreload" crossorigin href="/assets/createLucideIcon-KuP1sHHk.js">
+    <link rel="modulepreload" crossorigin href="/assets/validation-FdTlrw-l.js">
+    <link rel="modulepreload" crossorigin href="/assets/themeSettings-CIGh73FN.js">
+    <link rel="stylesheet" crossorigin href="/assets/charts-CnsZ1jie.css">
+    <link rel="stylesheet" crossorigin href="/assets/index-w4LBPa3L.css">
+  <style id="node-type-chip-style">
+.node-type-chip{display:inline-flex;align-items:center;gap:4px;height:18px;padding:0 7px;border-radius:999px;font-size:10.5px;font-weight:600;line-height:1;letter-spacing:.02em;white-space:nowrap;border:1px solid transparent;flex:none;vertical-align:middle}
+.node-type-chip .node-type-dot{width:4px;height:4px;border-radius:50%;background:currentColor;box-shadow:0 0 0 2px color-mix(in srgb,currentColor 16%,transparent)}
+.node-type-chip[data-type=line]{color:#2563eb;background:color-mix(in srgb,#3b82f6 12%,transparent);border-color:color-mix(in srgb,#3b82f6 24%,transparent)}
+.node-type-chip[data-type=landing]{color:#7c3aed;background:color-mix(in srgb,#8b5cf6 12%,transparent);border-color:color-mix(in srgb,#8b5cf6 24%,transparent)}
+.node-type-chip[data-type=build]{color:#b45309;background:color-mix(in srgb,#f59e0b 14%,transparent);border-color:color-mix(in srgb,#f59e0b 28%,transparent)}
+[data-appearance=dark] .node-type-chip[data-type=line]{color:#93c5fd;background:color-mix(in srgb,#60a5fa 16%,transparent);border-color:color-mix(in srgb,#60a5fa 30%,transparent)}
+[data-appearance=dark] .node-type-chip[data-type=landing]{color:#c4b5fd;background:color-mix(in srgb,#a78bfa 16%,transparent);border-color:color-mix(in srgb,#a78bfa 30%,transparent)}
+[data-appearance=dark] .node-type-chip[data-type=build]{color:#fcd34d;background:color-mix(in srgb,#fbbf24 16%,transparent);border-color:color-mix(in srgb,#fbbf24 30%,transparent)}
+.dstatus-tags-row .node-type-chip,.mini-node-chip-row .node-type-chip,.node-list-chips .node-type-chip{align-self:center}
+.compact-node-info-content>.node-type-chip{align-self:flex-start;margin-top:1px}
+  /* 首页隐藏资产概览卡片，仅隐藏首页总览，不影响资产统计页 */
+  .home-overview { grid-template-columns: repeat(2, minmax(0px, 1fr)) !important; }
+  .home-overview > .overview-card[data-metric="asset"],
+  .home-overview > .overview-card[data-metric="traffic"] { display: none !important; }
+
+.dstatus-price-chip,.mini-node-price-tag,.node-type-chip{box-sizing:border-box;display:inline-flex;align-items:center;gap:5px;height:24px;padding:0 9px;border-radius:8px;font-size:11px;font-weight:700;line-height:1;white-space:nowrap}
+.node-type-chip .node-type-dot{flex:none}
+.compact-node-info-content>.node-type-chip{height:20px;padding:0 7px;font-size:10px}
+</style>
+<link rel="stylesheet" href="/assets/komari-routes.css?v=5">
+<script defer src="/assets/komari-routes.js?v=10"></script>
+</head>
+  <body>
+    <div id="root" class="relative z-30"></div>
+  </body>
+</html>

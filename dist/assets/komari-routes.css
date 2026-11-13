@@ -1,0 +1,28 @@
+.hv-route-summary{margin:0;padding:12px 0 0;border-top:1px solid var(--border,rgba(24,24,27,.08));font-size:11px;line-height:1.2}
+.hv-route-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+.hv-route-head-left{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;font-weight:600;color:var(--text-secondary,#52525b)}
+.hv-route-head-right{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;color:#71717a}
+.hv-route-legend{font-weight:500;letter-spacing:.01em}
+.hv-route-badge{padding:2px 6px;border-radius:6px;font-size:10px;font-weight:700;line-height:1.1;background:rgba(24,24,27,.05);color:var(--text-secondary,#52525b)}
+.hv-route-row{display:grid;grid-template-columns:3.2em minmax(0,1fr) minmax(0,1fr);gap:6px;align-items:center}
+.hv-route-row+.hv-route-row{margin-top:6px}
+.hv-route-carrier{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:500;color:var(--text-secondary,#52525b)}
+.hv-route-carrier i{width:2.5px;height:10px;border-radius:99px;display:inline-block;flex-shrink:0}
+.hv-route-carrier.is-telecom i{background:#3b82f6}
+.hv-route-carrier.is-unicom i{background:#ef4444}
+.hv-route-carrier.is-mobile i{background:#22c55e}
+.hv-route-cell{display:inline-flex;align-items:center;justify-content:space-between;gap:4px;min-width:0;height:25px;padding:0 9px;border-radius:8px;border:1px solid transparent;font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;transition:background-color .15s ease,border-color .15s ease}
+.hv-route-dir{font-size:10px;font-weight:600;opacity:.62;flex-shrink:0}
+.hv-route-val{flex:1;min-width:0;text-align:center;overflow:hidden;text-overflow:ellipsis;letter-spacing:-.01em}
+.hv-route-dot{width:5px;height:5px;border-radius:999px;background:currentColor;opacity:.8;flex-shrink:0}
+.hv-route-cell.is-excellent{color:rgb(47,158,101);background:rgba(47,158,101,.10);border-color:rgba(47,158,101,.20)}
+.hv-route-cell.is-good{color:rgb(37,99,235);background:rgba(59,130,246,.09);border-color:rgba(59,130,246,.20)}
+.hv-route-cell.is-standard{color:var(--text-secondary,#52525b);background:rgba(24,24,27,.035);border-color:rgba(24,24,27,.09)}
+.hv-route-cell.is-transit,.hv-route-cell.is-pending{color:rgb(180,83,9);background:rgba(245,158,11,.10);border-color:rgba(245,158,11,.24)}
+@media (prefers-color-scheme:dark){
+  .hv-route-badge{background:rgba(255,255,255,.08);color:#a1a1aa}
+  .hv-route-cell.is-excellent{color:#54d092;background:rgba(84,208,146,.14);border-color:rgba(84,208,146,.26)}
+  .hv-route-cell.is-good{color:#60a5fa;background:rgba(96,165,250,.14);border-color:rgba(96,165,250,.26)}
+  .hv-route-cell.is-standard{color:#d4d4d8;background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)}
+  .hv-route-cell.is-transit,.hv-route-cell.is-pending{color:#fbbf24;background:rgba(251,191,36,.14);border-color:rgba(251,191,36,.26)}
+}
