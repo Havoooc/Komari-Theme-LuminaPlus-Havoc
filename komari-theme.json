@@ -1,8 +1,8 @@
 {
   "name": "Komari-Theme-LuminaPlus-Havoc",
   "short": "LuminaPlus-Havoc",
-  "description": "Customized Komari-Theme-LuminaPlus (VPS type chip, 2-card overview, IPv4 3-carrier routes)",
-  "version": "1.3.6-havoc.2",
+  "description": "Customized Komari-Theme-LuminaPlus (VPS type chip, compact overview bar, IPv4 3-carrier routes)",
+  "version": "1.3.6-havoc.3",
   "author": "shark&shanyang (mod by Havoooc)",
   "url": "https://github.com/Havoooc/Komari-Theme-LuminaPlus-Havoc",
   "preview": "preview.png"

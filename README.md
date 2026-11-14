@@ -5,7 +5,7 @@
 ## 定制内容
 
 - **独立主题标识**：`komari-theme.json` 中 `short` 改为 `LuminaPlus-Havoc`，`url` 指向本仓库。
-- **首页双列概览**：在 `dist/index.html` 中隐藏首页概览的「资产概览」与「累计流量」卡片，并将 `.home-overview` 调整为双列布局（不影响 `/traffic` 与资产统计页）。
+- **首页一体化概览**：将「在线节点」与「实时带宽」合并为紧凑状态条，并隐藏首页的「资产概览」与「累计流量」卡片；桌面高度 `78px`，手机自动堆叠为两行。不影响 `/traffic` 与资产统计页。
 - **VPS 类型徽章**：在 `dist/assets/index-BX6_Q0cK.js` 与 `dist/index.html` 样式中为节点卡片价格旁增加「建站机 / 落地机 / 线路机」语义胶囊。
 - **IPv4 三网去回程模块**：新增 `dist/assets/komari-routes.js` 与 `dist/assets/komari-routes.css`，对接同域 `/routes/api` 展示各节点电信 / 联通 / 移动去回程线路与状态提示。
 
